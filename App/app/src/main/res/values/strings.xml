@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="login_edit">Introduce DNI</string>
+    <string name="passwd_edit">Introduce Password</string>
+    <string name="access_button">Acceder</string>
+    <string name="login_text">Usuario</string>
+    <string name="passwd_text">Contraseña</string>
 </resources>
