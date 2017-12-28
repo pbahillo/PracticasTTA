@@ -10,12 +10,12 @@
         android:id="@+id/test_wording"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <RadioGroup
         android:id="@+id/test_choices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
     </RadioGroup>
 
     <Button
@@ -27,6 +27,7 @@
         android:onClick="send"/>
 
     <Button
+        android:id="@+id/button_advice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"/>
