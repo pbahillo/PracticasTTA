@@ -5,4 +5,13 @@
     <string name="access_button">Acceder</string>
     <string name="login_text">Usuario</string>
     <string name="passwd_text">Contraseña</string>
+    <string name="leccion1_text">Lección 1: Introducción a Android</string>
+    <string name="test_button">NUEVO TEST</string>
+    <string name="exercise_button">NUEVO EJERCICIO</string>
+    <string name="accountment_button">SEGUIMIENTO</string>
+    <string name="button_send">ENVIAR</string>
+    <string name="text_send_file">SUBIR FICHERO</string>
+    <string name="text_take_photo">SACAR FOTO</string>
+    <string name="text_record_audio">GRABAR AUDIO</string>
+    <string name="text_record_video">GRABAR VÍDEO</string>
 </resources>
