@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.List;
+
+
+import eus.ehu.tta.pbahillo002.app.model.User;
+
 public class MenuActivity extends AppCompatActivity {
     public final static String EXTRA_LOGIN ="eus.ehu.tta.pbahillo002.app.login";
 
@@ -30,5 +35,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void accountment(View view) {
+
     }
 }

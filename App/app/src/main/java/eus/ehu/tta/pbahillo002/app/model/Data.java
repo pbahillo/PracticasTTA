@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Data implements Server {
-    //HARDCODED METHOD TO GET TEST
+    //HARDCODED METHODS TO EMULATE THE SERVER
     @Override
     public Test getTest() {
         Test test =new Test();
@@ -25,4 +25,34 @@ public class Data implements Server {
         }
         return test;
     }
+
+    @Override
+    public List<User> getUsers() {
+        List<String> names=new ArrayList<>();
+        List<String> login=new ArrayList<>();
+        List<String> passwd=new ArrayList<>();
+        List<User> users=new ArrayList<>();
+
+        names.add("Pablo Bahillo");
+        names.add("Gorka Prieto");
+        names.add("John Doe");
+
+        login.add("45950466P");
+        login.add("45671825N");
+        login.add("1234");
+
+        passwd.add("pablo");
+        passwd.add("gorka");
+        passwd.add("1234");
+
+        for (int i=0;i<names.size();i++){
+            User user=new User();
+            user.setLogin(login.get(i));
+            user.setName(names.get(i));
+            user.setPasswd(passwd.get(i));
+            users.add(user);
+        }
+        return users;
+    }
+
 }
