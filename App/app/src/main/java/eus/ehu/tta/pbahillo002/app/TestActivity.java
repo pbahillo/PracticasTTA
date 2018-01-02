@@ -20,10 +20,12 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        Test test=null;
+        Data data=new Data();
+        Test test=data.getTest();
         TextView textView=(TextView)findViewById(R.id.test_wording);
         textView.setText(test.getWording());
         RadioGroup radioGroup=(RadioGroup)findViewById(R.id.test_choices);
+
         int i=0;
         for(Test.Choice choice:test.getChoices()){
             RadioButton radioButton=new RadioButton(this);

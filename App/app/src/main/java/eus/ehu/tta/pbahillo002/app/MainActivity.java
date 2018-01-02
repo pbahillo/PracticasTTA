@@ -26,6 +26,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean authenticate(String login, String passwd) {
-        return false;
+        return true;
     }
 }
