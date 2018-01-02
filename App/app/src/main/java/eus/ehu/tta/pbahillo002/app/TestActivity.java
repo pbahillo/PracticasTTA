@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        Data data=new Data();
+        Data data=new Data() ;
         Test test=data.getTest();
         TextView textView=(TextView)findViewById(R.id.test_wording);
         textView.setText(test.getWording());
@@ -58,9 +59,17 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         if (selected!=correct){
             radioGroup.getChildAt(selected).setBackgroundColor(Color.RED);
             Toast.makeText(getApplicationContext(),R.string.bad_answer,Toast.LENGTH_SHORT).show();
-            if(advice!=null&& !advice.isEmpty())
+            if(advice!=null)
                 findViewById(R.id.button_advice).setVisibility(View.VISIBLE);
         }else
             Toast.makeText(getApplicationContext(),R.string.good_answer,Toast.LENGTH_SHORT).show();
+    }
+
+    public void showAdvice(View view){
+        WebView webView=new WebView(this);
+        webView.loadData(advice,"text/html",null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE,null);
+        ((ViewGroup)view.getParent()).addView(webView);
     }
 }
