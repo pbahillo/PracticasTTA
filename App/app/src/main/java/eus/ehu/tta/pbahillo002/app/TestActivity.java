@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.IOException;
+
 import eus.ehu.tta.pbahillo002.app.model.*;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener {
@@ -78,12 +80,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             showHTML(test.getChoices().get(selected).getAdvice());
         }else if(test.getChoices().get(selected).getMime().equals("video")){
             showVideo(test.getChoices().get(selected).getAdvice());
-        }else if(test.getChoices().get(selected).getMime().equals("audio")){
-
+        }else if(test.getChoices().get(selected).getMime().equals("audio")) {
+            showAudio(view,test.getChoices().get(selected).getAdvice());
         }
-
-
     }
+
     public void showHTML(String advice){
         if (advice.substring(0,10).contains("://")){
             Uri uri=Uri.parse(advice);
@@ -97,6 +98,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             viewGroup.addView(webView);
         }
     }
+
     public void showVideo(String advice){
         VideoView videoView=new VideoView(this);
         videoView.setVideoURI(Uri.parse(advice));
@@ -118,5 +120,21 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         videoView.setMediaController(mediaController);
         viewGroup.addView(videoView);
         videoView.start();
+    }
+
+    public void showAudio(View view,String advice){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        };
+        AudioPlayer player = new AudioPlayer(view, runnable);
+        try {
+            player.setUri(Uri.parse(advice));
+            player.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

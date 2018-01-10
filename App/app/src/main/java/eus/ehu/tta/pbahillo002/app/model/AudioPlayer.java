@@ -26,6 +26,7 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
                     release();
                     onExit.run();
                 }
+                return super.dispatchKeyEvent(event);
             }
         };
     }
@@ -35,6 +36,14 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
         player.setDataSource(view.getContext(),uri);
         player.prepare();
         player.start();
+    }
+
+    public void release(){
+        if(player!=null){
+            player.stop();
+            player.release();
+            player=null;
+        }
     }
 
     @Override
@@ -56,12 +65,12 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
 
     @Override
     public int getDuration() {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getCurrentPosition() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -71,31 +80,31 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
 
     @Override
     public boolean isPlaying() {
-        return false;
+        return true;
     }
 
     @Override
     public int getBufferPercentage() {
-        return 0;
+        return 1;
     }
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override
     public int getAudioSessionId() {
-        return 0;
+        return 1;
     }
 }
