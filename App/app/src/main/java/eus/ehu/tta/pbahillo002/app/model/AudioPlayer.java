@@ -65,29 +65,28 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
 
     @Override
     public int getDuration() {
-        return 1;
+        return player.getDuration();
     }
 
     @Override
     public int getCurrentPosition() {
-        return 1;
+        return player.getCurrentPosition();
     }
 
     @Override
     public void seekTo(int pos) {
-
+        player.seekTo(pos);
     }
 
     @Override
     public boolean isPlaying() {
-        return true;
+        return player.isPlaying();
     }
 
     @Override
     public int getBufferPercentage() {
-        return 1;
+        return 0;
     }
-
     @Override
     public boolean canPause() {
         return true;
@@ -105,6 +104,6 @@ public class AudioPlayer implements MediaController.MediaPlayerControl,MediaPlay
 
     @Override
     public int getAudioSessionId() {
-        return 1;
+        return player.getAudioSessionId();
     }
 }

@@ -21,7 +21,7 @@ public class MenuActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         TextView textView=(TextView)findViewById(R.id.menu_login);
-        textView.setText(intent.getStringExtra(EXTRA_LOGIN));
+        textView.setText(getString(R.string.welcome_msg).concat(intent.getStringExtra(EXTRA_LOGIN)));
     }
 
     public void test(View view) {

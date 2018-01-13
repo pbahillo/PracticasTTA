@@ -17,4 +17,10 @@
     <string name="bad_answer">¡HAS FALLADO!</string>
     <string name="good_answer">¡CORRECTO!</string>
     <string name="advice_button">ADVICE</string>
+    <string name="no_camara">¡NO HAY CÁMARA!</string>
+    <string name="no_app" translatable="false">NO HAY APP PARA FOTOS</string>
+    <string name="no_micro">NO HAY MICRÓFONO</string>
+    <string name="display_name">Display Name:</string>
+    <string name="size">Size:</string>
+    <string name="welcome_msg">"Bienvenido "</string>
 </resources>

@@ -5,6 +5,5 @@ import java.util.List;
 
 interface Server {
     Test getTest();
-
     List<User> getUsers();
 }

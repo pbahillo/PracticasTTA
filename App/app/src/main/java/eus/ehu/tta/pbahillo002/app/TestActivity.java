@@ -59,7 +59,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     public void send(View view) {
         viewGroup=(ViewGroup)view.getParent();
         RadioGroup radioGroup=(RadioGroup)findViewById(R.id.test_choices);
-        selected=radioGroup.getCheckedRadioButtonId()-1;
+        selected=getSelected(radioGroup);
         int choices=radioGroup.getChildCount();
 
         for(int i=0;i<choices;i++)
@@ -123,18 +123,24 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showAudio(View view,String advice){
-        Runnable runnable = new Runnable() {
+
+        AudioPlayer player = new AudioPlayer(view, new Runnable() {
             @Override
             public void run() {
                 finish();
             }
-        };
-        AudioPlayer player = new AudioPlayer(view, runnable);
+        });
         try {
             player.setUri(Uri.parse(advice));
-            player.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getSelected(RadioGroup radioGroup){
+        for (int i=0;i<=radioGroup.getChildCount();i++)
+            if(((RadioButton)radioGroup.getChildAt(i)).isChecked())
+                return i;
+        return -1;
     }
 }
