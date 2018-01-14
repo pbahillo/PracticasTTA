@@ -1,7 +1,11 @@
 package eus.ehu.tta.pbahillo002.app.model;
 
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
+    private int id;
+    private int lesson;
     private String name;
     private String passwd;
     private String login;

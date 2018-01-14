@@ -1,15 +1,26 @@
 package eus.ehu.tta.pbahillo002.app.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Test {
+public class Test implements Serializable {
     public static class Choice{
+        private int id;
         private String wording="";
         private boolean correct=false;
-        private String advice=null;
+        private String advise=null;
         private String mime;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
         public String getWording() {
             return wording;
         }
@@ -26,12 +37,12 @@ public class Test {
             this.correct = correct;
         }
 
-        public String getAdvice() {
-            return advice;
+        public String getAdvise() {
+            return advise;
         }
 
-        public void setAdvice(String advice) {
-            this.advice = advice;
+        public void setAdvise(String advise) {
+            this.advise = advise;
         }
 
         public String getMime() {

@@ -17,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import eus.ehu.tta.pbahillo002.app.model.*;
@@ -69,7 +73,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         if (selected!=correct){
             radioGroup.getChildAt(selected).setBackgroundColor(Color.RED);
             Toast.makeText(getApplicationContext(),R.string.bad_answer,Toast.LENGTH_SHORT).show();
-            if(test.getChoices().get(selected).getAdvice()!=null)
+            if(test.getChoices().get(selected).getAdvise()!=null)
                 findViewById(R.id.button_advice).setVisibility(View.VISIBLE);
         }else
             Toast.makeText(getApplicationContext(),R.string.good_answer,Toast.LENGTH_SHORT).show();
@@ -77,11 +81,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showAdvice(View view){
         if(test.getChoices().get(selected).getMime().equals("text/html")){
-            showHTML(test.getChoices().get(selected).getAdvice());
+            showHTML(test.getChoices().get(selected).getAdvise());
         }else if(test.getChoices().get(selected).getMime().equals("video")){
-            showVideo(test.getChoices().get(selected).getAdvice());
+            showVideo(test.getChoices().get(selected).getAdvise());
         }else if(test.getChoices().get(selected).getMime().equals("audio")) {
-            showAudio(view,test.getChoices().get(selected).getAdvice());
+            showAudio(view,test.getChoices().get(selected).getAdvise());
         }
     }
 

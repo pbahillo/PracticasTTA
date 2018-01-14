@@ -1,4 +1,9 @@
+/*
 package eus.ehu.tta.pbahillo002.app.model;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +11,7 @@ import java.util.List;
 public class Data implements Server {
     //HARDCODED METHODS TO EMULATE THE SERVER
     @Override
+
     public Test getTest() {
         Test test =new Test();
         List<String> strings=new ArrayList<>();
@@ -44,12 +50,34 @@ public class Data implements Server {
             choice.setWording(strings.get(i));
             choice.setCorrect(b[i]);
             if(!advices.get(1).equals("CONSEJO TRAMPA")) {
-                choice.setAdvice(advices.get(i));
+                choice.setAdvise(advices.get(i));
                 choice.setMime(mimes.get(i));
             }
             test.getChoices().add(choice);
         }
         return test;
+    }
+
+    public Test getTest(){
+        try {
+            Test test=new Test();
+            JSONObject jsonObject=new JSONObject(bundle.getString(EXTRA_TEST));
+            test.setWording((jsonObject.getString("wording")));
+            JSONArray array=jsonObject.getJSONArray("choices");
+            for (int i=0;i<array.length();i++){
+                JSONObject item=array.getJSONObject(i);
+                Test.Choice choice=new Test.Choice();
+                choice.setId(item.getInt("id"));
+                choice.setWording(item.getString("wording"));
+                choice.setCorrect(item.getBoolean("correct"));
+                choice.setAdvise(item.optString("advise",null));
+                choice.setMime(item.optString("mime",null));
+                test.getChoices().add(choice);
+            }
+            return test;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
     @Override
@@ -82,3 +110,4 @@ public class Data implements Server {
     }
 
 }
+*/
