@@ -1,4 +1,4 @@
-package eus.ehu.tta.pbahillo002.app.model;
+package eus.ehu.tta.pbahillo002.app.presenter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +18,8 @@ public abstract class ProgressTask<T> extends AsyncTask<Void,Void,T> {
         dialog=new ProgressDialog(context);
         dialog.setMessage(context.getResources().getString(R.string.connecting));
     }
+
+
     @Override
     protected void onPreExecute(){
         dialog.show();
@@ -36,13 +38,13 @@ public abstract class ProgressTask<T> extends AsyncTask<Void,Void,T> {
     @Override
     protected void onPostExecute(T result){
         if(dialog.isShowing())
-            dialog.dismiss();;
+            dialog.dismiss();
         if(e!=null)
             Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
         else
             onFinish(result);
     }
 
-    protected abstract T work()throws  Exception;
+    protected abstract T work()throws Exception;
     protected abstract void onFinish(T result);
 }

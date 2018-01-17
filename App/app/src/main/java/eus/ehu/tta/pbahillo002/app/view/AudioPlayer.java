@@ -1,4 +1,4 @@
-package eus.ehu.tta.pbahillo002.app.model;
+package eus.ehu.tta.pbahillo002.app.view;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;

@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public class Test implements Serializable {
-    public static class Choice{
+    public static class Choice implements Serializable {
         private int id;
         private String wording="";
         private boolean correct=false;

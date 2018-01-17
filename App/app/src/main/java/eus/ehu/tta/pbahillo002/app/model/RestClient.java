@@ -2,6 +2,7 @@ package eus.ehu.tta.pbahillo002.app.model;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,18 +28,22 @@ public class RestClient {
         this.baseURL=baseURL;
     }
     public void setHttpBasicAuth(String user, String passwd){
-
+        String basicAuth= Base64.encodeToString(String.format("%s:%s",user,passwd).getBytes(),Base64.DEFAULT);
+        properties.put(AUTH,String.format("Basic %s",basicAuth));
     }
 
     public String getAuthorization(){
         return properties.get(AUTH);
     }
+
     public void setAuthorization(String authorization){
         properties.put(AUTH,authorization);
     }
+
     public void setPropertiy(String name, String value){
         properties.put(name,value);
     }
+
     public HttpURLConnection getConnection(String path) throws IOException {
         URL url=new URL(String.format("%s/%s",baseURL,path));
         HttpURLConnection connection=(HttpURLConnection)url.openConnection();

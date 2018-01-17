@@ -23,5 +23,6 @@
     <string name="display_name">Display Name:</string>
     <string name="size">Size:</string>
     <string name="welcome_msg">"Bienvenido "</string>
-    <string name="connecting">Conectando...</string>
+    <string name="connecting">Conectando…</string>
+    <string name="auth_fail">Lo sentimos: Hay un fallo de autenticación</string>
 </resources>

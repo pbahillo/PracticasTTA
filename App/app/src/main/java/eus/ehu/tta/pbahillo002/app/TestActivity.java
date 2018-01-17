@@ -3,7 +3,8 @@ package eus.ehu.tta.pbahillo002.app;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.app.ActionBar;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -17,33 +18,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import eus.ehu.tta.pbahillo002.app.model.*;
+import eus.ehu.tta.pbahillo002.app.presenter.Data;
+import eus.ehu.tta.pbahillo002.app.view.AudioPlayer;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Test test;
+    public final static String TEST="eus.ehu.tta.pbahillo002.app.test";
+    Data data;
+
     int correct=0;
     int selected=0;
     ViewGroup viewGroup;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        Data data=new Data() ;
-        test=data.getTest();
+        data=(Data) getIntent().getSerializableExtra(data.DATA);
         TextView textView=(TextView)findViewById(R.id.test_wording);
-        textView.setText(test.getWording());
+        textView.setText(data.getTest().getWording());
         RadioGroup radioGroup=(RadioGroup)findViewById(R.id.test_choices);
-
         int i=0;
-        for(Test.Choice choice:test.getChoices()){
+        for(Test.Choice choice:data.getTest().getChoices()){
             RadioButton radioButton=new RadioButton(this);
             radioButton.setText(choice.getWording());
             radioButton.setOnClickListener(this);
@@ -60,6 +60,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void send(View view) {
         viewGroup=(ViewGroup)view.getParent();
         RadioGroup radioGroup=(RadioGroup)findViewById(R.id.test_choices);
@@ -73,19 +74,20 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         if (selected!=correct){
             radioGroup.getChildAt(selected).setBackgroundColor(Color.RED);
             Toast.makeText(getApplicationContext(),R.string.bad_answer,Toast.LENGTH_SHORT).show();
-            if(test.getChoices().get(selected).getAdvise()!=null)
+            if(data.getTest().getChoices().get(selected).getAdvise()!=null)
                 findViewById(R.id.button_advice).setVisibility(View.VISIBLE);
         }else
             Toast.makeText(getApplicationContext(),R.string.good_answer,Toast.LENGTH_SHORT).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showAdvice(View view){
-        if(test.getChoices().get(selected).getMime().equals("text/html")){
-            showHTML(test.getChoices().get(selected).getAdvise());
-        }else if(test.getChoices().get(selected).getMime().equals("video")){
-            showVideo(test.getChoices().get(selected).getAdvise());
-        }else if(test.getChoices().get(selected).getMime().equals("audio")) {
-            showAudio(view,test.getChoices().get(selected).getAdvise());
+        if(data.getTest().getChoices().get(selected).getMime().equals("text/html")){
+            showHTML(data.getTest().getChoices().get(selected).getAdvise());
+        }else if(data.getTest().getChoices().get(selected).getMime().equals("video")){
+            showVideo(data.getTest().getChoices().get(selected).getAdvise());
+        }else if(data.getTest().getChoices().get(selected).getMime().equals("audio")) {
+            showAudio(view,data.getTest().getChoices().get(selected).getAdvise());
         }
     }
 

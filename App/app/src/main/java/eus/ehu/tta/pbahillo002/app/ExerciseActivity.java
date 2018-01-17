@@ -98,7 +98,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 break;
         }
     }
-    public void dupImageMetaData (Uri uri){
+    public void dumpImageMetaData (Uri uri){
         Cursor cursor=this.getContentResolver().query(uri,null,null,null,null,null);
         try{
             if(cursor!=null&&cursor.moveToFirst()){
