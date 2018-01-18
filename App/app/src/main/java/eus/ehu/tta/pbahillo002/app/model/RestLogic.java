@@ -23,7 +23,6 @@ public class RestLogic implements RestServer {
         client.setHttpBasicAuth(dni,passwd);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public User getStatus(String dni) {
         try {
@@ -46,7 +45,6 @@ public class RestLogic implements RestServer {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public Test getTest(int id) {
         try {
@@ -77,7 +75,26 @@ public class RestLogic implements RestServer {
 
     @Override
     public Exercise getExercise(int id) {
-        return null;
+        try {
+            Exercise exercise=new Exercise();
+            Exercise.LessonBean lessonBean=new Exercise.LessonBean();
+            JSONObject jsonObject=client.getJson("getExercise?id="+Integer.toString(id));
+            JSONObject item=jsonObject.getJSONObject("lessonBean");
+            exercise.setId(jsonObject.getInt("id"));
+            exercise.setWording(jsonObject.getString("wording"));
+            lessonBean.setId(item.getInt("id"));
+            lessonBean.setNumber(item.getInt("number"));
+            lessonBean.setTitle(item.getString("title"));
+            exercise.setLessonBean(lessonBean);
+            return exercise;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override

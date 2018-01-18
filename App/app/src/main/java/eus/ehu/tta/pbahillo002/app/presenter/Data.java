@@ -11,7 +11,6 @@ import eus.ehu.tta.pbahillo002.app.model.RestLogic;
 import eus.ehu.tta.pbahillo002.app.model.Test;
 import eus.ehu.tta.pbahillo002.app.model.User;
 
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class Data implements Serializable {
     public final static String DATA="eus.ehu.tta.pbahillo002.app.data";
     private String dni;
@@ -19,25 +18,6 @@ public class Data implements Serializable {
     private User user;
     private Test test;
     private Exercise exercise;
-
-    public Data (String dni,String passwd){
-        this.dni=dni;
-        this.passwd=passwd;
-    }
-
-    public User authenticate(String dni,String passwd){
-        this.dni=dni;
-        this.passwd=passwd;
-        RestLogic server=new RestLogic(this.dni,this.passwd);
-        user=server.getStatus(this.dni);
-        return user;
-    }
-
-    public Test downloadTest(){
-        RestLogic restLogic=new RestLogic(dni,passwd);
-        test=restLogic.getTest(user.getNextTest());
-        return test;
-    }
 
     public String getDni() {
         return dni;
@@ -59,11 +39,23 @@ public class Data implements Serializable {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Test getTest() {
         return test;
     }
 
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
     public Exercise getExercise() {
         return exercise;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
 }

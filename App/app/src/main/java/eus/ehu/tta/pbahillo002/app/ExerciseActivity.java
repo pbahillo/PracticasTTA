@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -23,17 +24,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import eus.ehu.tta.pbahillo002.app.presenter.Data;
+
 public class ExerciseActivity extends AppCompatActivity {
 
     public static final int PHOTO_REQUEST_CODE=0;
     public static final int VIDEO_REQUEST_CODE=1;
     public static final int AUDIO_REQUEST_CODE=2;
     public static final int READ_REQUEST_CODE=3;
+    private Data data;
     Uri pictureUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+        data=(Data) getIntent().getSerializableExtra(data.DATA);
+        TextView textView=(TextView) findViewById(R.id.exercise_wording);
+        textView.setText(data.getExercise().getWording());
     }
 
     public void takePhoto(View view) {
@@ -105,7 +113,7 @@ public class ExerciseActivity extends AppCompatActivity {
                 String displayName=cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 Toast.makeText(this,getString(R.string.display_name)+displayName,Toast.LENGTH_SHORT).show();
                 int sizeIndex=cursor.getColumnIndex(OpenableColumns.SIZE);
-                String size=null;
+                String size;
                 if(!cursor.isNull(sizeIndex))
                     size=cursor.getString(sizeIndex);
                 else

@@ -25,13 +25,15 @@ public class MainActivity extends AppCompatActivity {
     public void login (View view){
         String login=((EditText)findViewById(R.id.login)).getText().toString();
         String passwd=((EditText)findViewById(R.id.passwd)).getText().toString();
-        data=new Data(login,passwd);
+        data=new Data();
+        data.setPasswd(passwd);
+        data.setDni(login);
         new ProgressTask<User>(this){
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             protected User work() throws Exception {
-                User user=data.authenticate(data.getDni(),data.getPasswd());
-                return user;
+                RestLogic restLogic=new RestLogic(data.getDni(),data.getPasswd());
+                data.setUser(restLogic.getStatus(data.getDni()));
+                return data.getUser();
             }
             @Override
             protected void onFinish(User result) {

@@ -33,7 +33,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     int selected=0;
     ViewGroup viewGroup;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,13 +79,12 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(getApplicationContext(),R.string.good_answer,Toast.LENGTH_SHORT).show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void showAdvice(View view){
         if(data.getTest().getChoices().get(selected).getMime().equals("text/html")){
             showHTML(data.getTest().getChoices().get(selected).getAdvise());
-        }else if(data.getTest().getChoices().get(selected).getMime().equals("video")){
+        }else if(data.getTest().getChoices().get(selected).getMime().equals("video/mp4")){
             showVideo(data.getTest().getChoices().get(selected).getAdvise());
-        }else if(data.getTest().getChoices().get(selected).getMime().equals("audio")) {
+        }else if(data.getTest().getChoices().get(selected).getMime().equals("audio/mpeg")) {
             showAudio(view,data.getTest().getChoices().get(selected).getAdvise());
         }
     }
