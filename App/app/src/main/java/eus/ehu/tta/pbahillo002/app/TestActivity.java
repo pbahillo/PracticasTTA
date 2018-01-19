@@ -22,11 +22,10 @@ import java.io.IOException;
 
 import eus.ehu.tta.pbahillo002.app.model.*;
 import eus.ehu.tta.pbahillo002.app.presenter.Data;
+import eus.ehu.tta.pbahillo002.app.presenter.ProgressTask;
 import eus.ehu.tta.pbahillo002.app.view.AudioPlayer;
 
 public class TestActivity extends AppCompatActivity implements View.OnClickListener {
-
-    public final static String TEST="eus.ehu.tta.pbahillo002.app.test";
     Data data;
 
     int correct=0;
@@ -59,16 +58,31 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void send(View view) {
         viewGroup=(ViewGroup)view.getParent();
         RadioGroup radioGroup=(RadioGroup)findViewById(R.id.test_choices);
         selected=getSelected(radioGroup);
         int choices=radioGroup.getChildCount();
-
         for(int i=0;i<choices;i++)
             radioGroup.getChildAt(i).setEnabled(false);
         viewGroup.removeView(findViewById(R.id.button_send_test));
+        new ProgressTask<Boolean>(this){
+
+            @Override
+            protected Boolean work() throws Exception {
+                RestLogic restLogic=new RestLogic(data.getDni(),data.getPasswd());
+                return restLogic.postChoice(data.getUser().getId(),data.getTest().getChoices().get(selected).getId());
+            }
+
+            @Override
+            protected void onFinish(Boolean result) {
+                if(result){
+                    Toast.makeText(getApplicationContext(),R.string.file_send_ok,Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),R.string.file_send_bad,Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
         radioGroup.getChildAt(correct).setBackgroundColor(Color.GREEN);
         if (selected!=correct){
             radioGroup.getChildAt(selected).setBackgroundColor(Color.RED);
@@ -111,7 +125,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         MediaController mediaController=new MediaController(this){
             @Override
             public void hide(){
-
             }
             @Override
             public boolean dispatchKeyEvent(KeyEvent keyEvent){
@@ -127,7 +140,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showAudio(View view,String advice){
-
         AudioPlayer player = new AudioPlayer(view, new Runnable() {
             @Override
             public void run() {

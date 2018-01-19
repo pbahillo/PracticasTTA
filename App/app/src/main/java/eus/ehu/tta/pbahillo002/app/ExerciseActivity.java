@@ -19,12 +19,15 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import eus.ehu.tta.pbahillo002.app.model.RestLogic;
 import eus.ehu.tta.pbahillo002.app.presenter.Data;
+import eus.ehu.tta.pbahillo002.app.presenter.ProgressTask;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -89,28 +92,31 @@ public class ExerciseActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        if(requestCode!= Activity.RESULT_OK)
+        if(resultCode!= Activity.RESULT_OK)
             return;
         switch(requestCode){
             case PHOTO_REQUEST_CODE:
-                //sendFile(pictureUri);
+                sendFile(pictureUri);
                 break;
             case AUDIO_REQUEST_CODE:
-                //sendFile(data.getData());
+                sendFile(data.getData());
                 break;
             case READ_REQUEST_CODE:
+                sendFile(data.getData());
+                break;
+            case VIDEO_REQUEST_CODE:
+                sendFile(data.getData());
                 break;
         }
     }
-    public void dumpImageMetaData (Uri uri){
+    public String dumpImageMetaData (Uri uri){
         Cursor cursor=this.getContentResolver().query(uri,null,null,null,null,null);
+        String displayName=null;
         try{
             if(cursor!=null&&cursor.moveToFirst()){
-                String displayName=cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                displayName=cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 Toast.makeText(this,getString(R.string.display_name)+displayName,Toast.LENGTH_SHORT).show();
                 int sizeIndex=cursor.getColumnIndex(OpenableColumns.SIZE);
                 String size;
@@ -122,9 +128,10 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         }finally {
             cursor.close();
+            return displayName;
         }
     }
-
+/*
     @NonNull
     private String readTextFromUri(Uri uri) throws IOException {
         InputStream inputStream=getContentResolver().openInputStream(uri);
@@ -137,7 +144,7 @@ public class ExerciseActivity extends AppCompatActivity {
         inputStream.close();
         return stringBuilder.toString();
     }
-
+*/
     public void sendFile(View view){
         Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -145,5 +152,45 @@ public class ExerciseActivity extends AppCompatActivity {
         startActivityForResult(intent,READ_REQUEST_CODE);
     }
 
+    private void sendFile(final Uri uri){
+        new ProgressTask<Boolean>(this){
+            @Override
+            protected Boolean work() throws Exception{
+                RestLogic restLogic=new RestLogic(data.getDni(),data.getPasswd());
+                InputStream inputStream=null;
+                String filename=null;
+                try{
+                    if(uri.toString().startsWith("file")){
+                        try{
+                            inputStream=new FileInputStream(uri.toString().substring(7));
+                            String[] parts=uri.toString().split("/");
+                            filename=parts[parts.length-1];
+                        }catch (FileNotFoundException ignored){
+                        }
+                    }else{
+                        inputStream=context.getContentResolver().openInputStream(uri);
+                        filename=dumpImageMetaData(uri);
+                    }
+                    return restLogic.postExercise(data.getUser().getId(),data.getExercise().getId(),inputStream,filename);
+                }finally{
+                    if(inputStream!=null){
+                        try{
+                            inputStream.close();
+                        }catch (IOException ignored) {
+                        }
+                    }
+                }
+            }
 
+            @Override
+            protected void onFinish(Boolean result) {
+                if(result){
+                    Toast.makeText(getApplicationContext(),R.string.file_send_ok,Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),R.string.file_send_bad,Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
 }
+

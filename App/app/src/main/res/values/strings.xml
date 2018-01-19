@@ -25,4 +25,6 @@
     <string name="welcome_msg">"Bienvenido "</string>
     <string name="connecting">Conectando…</string>
     <string name="auth_fail">Lo sentimos: Hay un fallo de autenticación</string>
+    <string name="file_send_ok">Subido correctamente</string>
+    <string name="file_send_bad">Fallo de servidor</string>
 </resources>

@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 
 
 public class RestLogic implements RestServer {
@@ -98,13 +100,37 @@ public class RestLogic implements RestServer {
     }
 
     @Override
-    public int postExercise(int userId, int exerciseId) {
-        return 0;
+    public Boolean postExercise(int userId, int exerciseId, InputStream inputStream, String filename) {
+        int code;
+        try {
+            code=client.postFile(String.format("postExercise?user=%s&id=%s",userId,exerciseId),inputStream,filename);
+            if (code==HttpURLConnection.HTTP_OK||code==HttpURLConnection.HTTP_NO_CONTENT)
+                return Boolean.TRUE;
+            return Boolean.FALSE;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Boolean.FALSE;
+        }
     }
 
     @Override
-    public int postChoice() {
-        return 0;
+    public Boolean postChoice(int userId, int choiceId) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("userId", userId);
+            json.put("choiceId", choiceId);
+            int code = client.postJson(json, "postChoice");
+            if (code==HttpURLConnection.HTTP_OK||code==HttpURLConnection.HTTP_NO_CONTENT)
+                return Boolean.TRUE;
+            return Boolean.FALSE;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return Boolean.FALSE;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Boolean.FALSE;
+        }
+
     }
 }
 

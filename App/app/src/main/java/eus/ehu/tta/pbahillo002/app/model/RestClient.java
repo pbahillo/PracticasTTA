@@ -52,7 +52,6 @@ public class RestClient {
         connection.setUseCaches(false);
         return connection;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String getString(String path)throws IOException{
         HttpURLConnection connection=null;
         try{
@@ -65,7 +64,6 @@ public class RestClient {
                 connection.disconnect();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     JSONObject getJson(String path)throws IOException,JSONException{
         return new JSONObject(getString(path));
 
@@ -82,7 +80,7 @@ public class RestClient {
             connection.setDoOutput(true);
             DataOutputStream outputStream=new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(newLine);
-            outputStream.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\""+fileName+"\""+newLine);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\"" + fileName + "\"" + newLine);
             outputStream.writeBytes(newLine);
             byte[] data=new byte[1024*1024];
             int len;
@@ -97,16 +95,15 @@ public class RestClient {
                 connection.disconnect();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int postJson(final JSONObject jsonObject, String path)throws IOException{
         HttpURLConnection connection=null;
         try {
             connection=getConnection(path);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type","application/json; charset=UTF-8");
-            connection.setDoOutput(true);
             try (PrintWriter printWriter=new PrintWriter(connection.getOutputStream())){
                 printWriter.print(jsonObject.toString());
+                printWriter.close();
                 return connection.getResponseCode();
             }
         }finally {
