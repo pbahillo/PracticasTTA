@@ -19,15 +19,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestClient {
+class RestClient {
     private final static String AUTH="Authorization";
     private final String baseURL;
     private final Map<String,String> properties=new HashMap<>();
 
-    public RestClient(String baseURL){
+    RestClient(String baseURL){
         this.baseURL=baseURL;
     }
-    public void setHttpBasicAuth(String user, String passwd){
+    void setHttpBasicAuth(String user, String passwd){
         String basicAuth= Base64.encodeToString(String.format("%s:%s",user,passwd).getBytes(),Base64.DEFAULT);
         properties.put(AUTH,String.format("Basic %s",basicAuth));
     }
@@ -44,7 +44,7 @@ public class RestClient {
         properties.put(name,value);
     }
 
-    public HttpURLConnection getConnection(String path) throws IOException {
+    private HttpURLConnection getConnection(String path) throws IOException {
         URL url=new URL(String.format("%s/%s",baseURL,path));
         HttpURLConnection connection=(HttpURLConnection)url.openConnection();
         for (Map.Entry<String,String> property:properties.entrySet())
@@ -52,11 +52,11 @@ public class RestClient {
         connection.setUseCaches(false);
         return connection;
     }
-    public String getString(String path)throws IOException{
+    private String getString(String path)throws IOException{
         HttpURLConnection connection=null;
         try{
             connection=getConnection(path);
-            try (BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(connection.getInputStream()))){
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 return bufferedReader.readLine();
             }
         }finally {
@@ -68,7 +68,7 @@ public class RestClient {
         return new JSONObject(getString(path));
 
     }
-    public int postFile(String path, InputStream inputStream,String fileName)throws IOException{
+    int postFile(String path, InputStream inputStream, String fileName)throws IOException{
         String boundary=Long.toString(System.currentTimeMillis());
         String newLine="\r\n";
         String prefix="--";
@@ -79,7 +79,7 @@ public class RestClient {
             connection.setRequestProperty("Content-Type","multipart/form-data;boundary="+boundary);
             connection.setDoOutput(true);
             DataOutputStream outputStream=new DataOutputStream(connection.getOutputStream());
-            outputStream.writeBytes(newLine);
+            outputStream.writeBytes(prefix+boundary+newLine);
             outputStream.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\"" + fileName + "\"" + newLine);
             outputStream.writeBytes(newLine);
             byte[] data=new byte[1024*1024];
@@ -95,7 +95,7 @@ public class RestClient {
                 connection.disconnect();
         }
     }
-    public int postJson(final JSONObject jsonObject, String path)throws IOException{
+    int postJson(final JSONObject jsonObject, String path)throws IOException{
         HttpURLConnection connection=null;
         try {
             connection=getConnection(path);
